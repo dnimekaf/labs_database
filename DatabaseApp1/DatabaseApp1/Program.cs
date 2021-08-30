@@ -10,6 +10,7 @@ namespace DatabaseApp1
     class Program
     {
         private readonly DbGateway _gateway;
+        private const string DateFormat = "yyyy-MM-dd";
 
         public Program(DbGateway gateway)
         {
@@ -71,9 +72,9 @@ namespace DatabaseApp1
         {
             Console.WriteLine("\nEnter course name: ");
             var courseName = Console.ReadLine();
-            Console.WriteLine("Enter start date (yyyy-mm-dd):");
+            Console.WriteLine($"Enter start date ({DateFormat}):");
             var startDateTime = ReadDateTime();
-            Console.WriteLine("Enter end date (yyyy-mm-dd):");
+            Console.WriteLine($"Enter end date ({DateFormat}):");
             var endDateTime = ReadDateTime();
 
             var result = await _gateway.AddCourse(courseName, startDateTime, endDateTime);
@@ -84,7 +85,7 @@ namespace DatabaseApp1
         {
             Console.WriteLine("\nEnter lecture name: ");
             var name = Console.ReadLine();
-            Console.WriteLine("Enter date (yyyy-mm-dd):");
+            Console.WriteLine($"Enter date ({DateFormat}):");
             var dateTime = ReadDateTime();
             Console.WriteLine("Enter description: ");
             var description = Console.ReadLine();
@@ -96,6 +97,12 @@ namespace DatabaseApp1
                 return;
             }
 
+            if (await _gateway.IsCourseExists(courseId) == false)
+            {
+                Console.WriteLine($"Course with id {courseId} does not exist");
+                return;
+            }
+            
             var result = await _gateway.AddLecture(name, courseId, dateTime, description);
             Console.WriteLine($"Lecture added: {result}");
         }
@@ -108,7 +115,7 @@ namespace DatabaseApp1
             Console.WriteLine("\nEnter student last name: ");
             var lastName = Console.ReadLine();
 
-            Console.WriteLine("Enter registration date (yyyy-mm-dd):");
+            Console.WriteLine($"Enter registration date ({DateFormat}):");
             var startDateTime = ReadDateTime();
 
             var result = await _gateway.AddStudent(firstName, lastName, startDateTime);
@@ -118,7 +125,7 @@ namespace DatabaseApp1
         private DateTime ReadDateTime()
         {
             var startDateStr = Console.ReadLine();
-            if (DateTime.TryParseExact(startDateStr, "yyyy-mm-dd", CultureInfo.InvariantCulture, DateTimeStyles.None,
+            if (DateTime.TryParseExact(startDateStr, DateFormat, CultureInfo.InvariantCulture, DateTimeStyles.None,
                 out var dateTime) == false)
             {
                 Console.WriteLine("Wrong date value");

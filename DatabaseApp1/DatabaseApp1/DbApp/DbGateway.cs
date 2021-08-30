@@ -88,5 +88,11 @@ namespace DatabaseApp1.DbApp
             await context.SaveChangesAsync();
             return student;
         }
+
+        public async Task<bool> IsCourseExists(int courseId)
+        {
+            await using var context = new Context(_connectionString);
+            return await context.Courses.AnyAsync(x => x.Id == courseId);
+        }
     }
 }

@@ -3,7 +3,7 @@ VALUES ('Архитектура и шаблоны проектирования',
        ('C# ASP.NET Core разработчик',  '2021-08-25', '2021-12-31'),
        ('iOS Developer. Professional',  '2021-08-26', '2021-12-31'),
        ('Python Developer. Basic',  '2021-08-27', '2021-12-31'),
-       ('Cloud Solution Architecture',  '2021-08-31', '2021-12-31')
+       ('Cloud Solution Architecture',  '2021-08-31', '2021-12-31');
 
 INSERT INTO public.lectures(
     name, course_id, description, date)
